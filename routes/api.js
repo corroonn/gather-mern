@@ -14,4 +14,11 @@ router.get("/", (req, res) => {
     });
 });
 
+router.post("/save", (req, res) => {
+  console.log("Body: ", req.body);
+  res.json({
+    msg: "Recieved data",
+  });
+});
+
 module.exports = router;
