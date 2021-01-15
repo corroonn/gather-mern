@@ -16,8 +16,18 @@ router.get("/", (req, res) => {
 
 router.post("/save", (req, res) => {
   console.log("Body: ", req.body);
-  res.json({
-    msg: "Recieved data",
+
+  const data = req.body;
+  const newTeamMember = new TeamMember(data);
+
+  newTeamMember.save((error) => {
+    if (error) {
+      res.status(500).json({ msg: "Sorry, internal server errors" });
+    } else {
+      res.json({
+        msg: "Recieved data",
+      });
+    }
   });
 });
 
