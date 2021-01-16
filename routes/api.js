@@ -31,4 +31,20 @@ router.post("/save", (req, res) => {
   });
 });
 
+router.delete("/delete", (req, res) => {
+  console.log("Body: ", req.body);
+  res.json({
+    msg: "Recieved data",
+  });
+});
+
+// router.delete("/:postId", async (req, res) => {
+//   try {
+//     const removedpost = await Post.remove({ _id: req.params.postId });
+//     res.json(removedpost);
+//   } catch (err) {
+//     rest.json({ message: err });
+//   }
+// });
+
 module.exports = router;

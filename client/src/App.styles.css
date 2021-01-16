@@ -1,0 +1,25 @@
+main {
+  font-family: Roboto, sans-serif;
+}
+
+header {
+  margin-bottom: 96px;
+}
+
+#logo {
+  font-family: "Poppins", sans-serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 48px;
+  letter-spacing: -0.04em;
+  text-align: left;
+}
+
+.row {
+  margin-bottom: 32px;
+}
+
+#display-teams {
+  margin-bottom: 64px;
+}
