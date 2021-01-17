@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const path = require("path");
+require("dotenv/config");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -9,13 +10,10 @@ const PORT = process.env.PORT || 8080;
 const routes = require("./routes/api.js");
 
 // mongoose connection
-mongoose.connect(
-  "mongodb+srv://corroonn:araby1905@cluster0.qcmsr.mongodb.net/Cluster0?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(process.env.DB_CONNECTION, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // listen for the connection to mongoose
 mongoose.connection.on("connected", () => {
