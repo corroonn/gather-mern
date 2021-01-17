@@ -9,17 +9,20 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import CardColumns from "react-bootstrap/CardColumns";
+import Spinner from "react-bootstrap/Spinner";
 
 function App() {
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescript] = useState("");
   const [posts, setPosts] = useState([]);
+  const [loading, isLoading] = useState(true);
 
   // On mount
   useEffect(() => {
     axios
       .get("/api")
+      .then(isLoading(false))
       .then((response) => {
         const data = response.data;
         setPosts(data);
@@ -60,19 +63,17 @@ function App() {
   // Delete button
 
   const handleDelete = (e) => {
-    console.log(e.target.name);
-
-    const payload = {
-      id: e.target.name,
-    };
+    const payload = e.target.name;
 
     axios({
-      url: "/api/delete",
-      method: "POST",
+      url: `/api/${payload}`,
+      method: "DELETE",
       data: payload,
-    }).catch(() => {
-      console.log("Internal server error.");
-    });
+    })
+      .catch(() => {
+        console.log("Internal server error.");
+      })
+      .then(getFreshData);
   };
 
   // Data refresh function
@@ -101,7 +102,11 @@ function App() {
             {details.name} - {details.title}
           </Card.Title>
           <Card.Text>{details.description}</Card.Text>
-          <Button name={details._id} onClick={handleDelete}>
+          <Button
+            name={details._id}
+            className="card-button_delete"
+            onClick={handleDelete}
+          >
             Delete
           </Button>
         </Card.Body>
@@ -119,7 +124,7 @@ function App() {
           <h1>Add team member.</h1>
           <Row>
             <Col lg={5}>
-              <Form>
+              <Form id="addteam-form">
                 <Form.Group controlId="formBasicText">
                   <Form.Label>Name</Form.Label>
                   <Form.Control
@@ -149,7 +154,7 @@ function App() {
                   <Form.Control
                     type="text-area"
                     name="title"
-                    placeholder="Enter your team member’s title"
+                    placeholder="Write a brief bio for your team member"
                     value={description}
                     onChange={(e) => setDescript(e.target.value)}
                   ></Form.Control>
@@ -174,7 +179,15 @@ function App() {
               </Card>
             </Col>
           </Row>
-          <CardColumns id="display-teams">{displayTeam}</CardColumns>
+          <CardColumns id="display-teams">
+            {loading === true ? (
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            ) : (
+              displayTeam
+            )}
+          </CardColumns>
         </Container>
       </main>
     </>

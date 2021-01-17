@@ -3,10 +3,10 @@ const TeamMember = require("../models/teamMembers");
 const router = express.Router();
 
 //Routes
-router.get("/", (req, res) => {
-  TeamMember.find({})
+router.get("/", async (req, res) => {
+  await TeamMember.find({})
     .then((data) => {
-      console.log("Data: ", data);
+      // console.log("Data: ", data);
       res.json(data);
     })
     .catch((error) => {
@@ -31,20 +31,19 @@ router.post("/save", (req, res) => {
   });
 });
 
-router.delete("/delete", (req, res) => {
-  console.log("Body: ", req.body);
-  res.json({
-    msg: "Recieved data",
-  });
-});
+//Delete
 
-// router.delete("/:postId", async (req, res) => {
-//   try {
-//     const removedpost = await Post.remove({ _id: req.params.postId });
-//     res.json(removedpost);
-//   } catch (err) {
-//     rest.json({ message: err });
-//   }
-// });
+router.delete("/:postId", async (req, res) => {
+  console.log("Params: ", req.params.postId);
+  const data = req.params.postId;
+  console.log(data);
+
+  try {
+    const removedMember = await TeamMember.remove({ _id: data });
+    res.json(removedMember);
+  } catch {
+    console.log("no dice");
+  }
+});
 
 module.exports = router;
